@@ -1,5 +1,5 @@
 # 🚦 AI-Powered Smart Traffic Management System
-
+An intelligent traffic management system that leverages Computer Vision, Deep Learning, and Artificial Intelligence to monitor real-time traffic using CCTV video streams. The system detects and tracks vehicles, estimates traffic density, dynamically optimizes traffic signal timings, prioritizes emergency vehicles, performs Automatic Number Plate Recognition (ANPR), and provides an interactive analytics dashboard for traffic monitoring.
 > **B.Tech Final Year Major Project** — AI + Computer Vision + Deep Learning
 
 [![Python](https://img.shields.io/badge/Python-3.12+-blue.svg)](https://python.org)
