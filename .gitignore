@@ -1,0 +1,165 @@
+# ==============================================================
+# Git Ignore — Smart Traffic Management System
+# ==============================================================
+
+# --------------------------------------------------------------
+# Python
+# --------------------------------------------------------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# --------------------------------------------------------------
+# Virtual Environments
+# --------------------------------------------------------------
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.conda/
+
+# --------------------------------------------------------------
+# Environment Variables (CRITICAL — never commit secrets)
+# --------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+!.env.example
+
+# --------------------------------------------------------------
+# IDEs
+# --------------------------------------------------------------
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# --------------------------------------------------------------
+# Jupyter Notebooks
+# --------------------------------------------------------------
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# --------------------------------------------------------------
+# Testing & Coverage
+# --------------------------------------------------------------
+.pytest_cache/
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+nosetests.xml
+test-results/
+
+# --------------------------------------------------------------
+# Type Checking
+# --------------------------------------------------------------
+.mypy_cache/
+.dmypy.json
+dmypy.json
+.pytype/
+.pyre/
+
+# --------------------------------------------------------------
+# Model Weights (large binary files — use Git LFS or download script)
+# --------------------------------------------------------------
+models/weights/*.pt
+models/weights/*.onnx
+models/weights/*.engine
+models/weights/*.trt
+!models/weights/.gitkeep
+
+# --------------------------------------------------------------
+# Database Files
+# --------------------------------------------------------------
+database/*.db
+database/*.sqlite
+database/*.sqlite3
+!database/.gitkeep
+!database/migrations/
+
+# --------------------------------------------------------------
+# Logs
+# --------------------------------------------------------------
+logs/*.log
+logs/*.log.*
+!logs/.gitkeep
+
+# --------------------------------------------------------------
+# Output Files
+# --------------------------------------------------------------
+outputs/frames/*.jpg
+outputs/frames/*.png
+outputs/frames/*.mp4
+outputs/plates/*.jpg
+outputs/plates/*.png
+outputs/reports/*.pdf
+outputs/reports/*.csv
+!outputs/.gitkeep
+!outputs/frames/.gitkeep
+!outputs/plates/.gitkeep
+!outputs/reports/.gitkeep
+
+# --------------------------------------------------------------
+# Videos (large files — store separately)
+# --------------------------------------------------------------
+videos/*.mp4
+videos/*.avi
+videos/*.mov
+videos/*.mkv
+!videos/.gitkeep
+!videos/README.md
+
+# --------------------------------------------------------------
+# Datasets (large files — use download scripts)
+# --------------------------------------------------------------
+datasets/
+!datasets/.gitkeep
+!datasets/README.md
+
+# --------------------------------------------------------------
+# Docker
+# --------------------------------------------------------------
+docker-compose.override.yml
+
+# --------------------------------------------------------------
+# Documentation Build
+# --------------------------------------------------------------
+site/
+docs/_build/
+
+# --------------------------------------------------------------
+# Temporary Files
+# --------------------------------------------------------------
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig

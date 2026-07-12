@@ -1,0 +1,119 @@
+[build-system]
+requires = ["setuptools>=74", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "smart-traffic-ai"
+version = "1.0.0"
+description = "AI-Powered Smart Traffic Management System using Computer Vision and Deep Learning"
+authors = [{ name = "B.Tech Final Year Project" }]
+license = { text = "MIT" }
+requires-python = ">=3.12"
+readme = "README.md"
+keywords = ["computer-vision", "deep-learning", "traffic-management", "yolov8", "real-time"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*", "frontend*", "config*", "utils*", "database*"]
+
+# ==============================================================
+# Ruff — Linter + Formatter (replaces flake8 + black + isort)
+# ==============================================================
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["backend", "frontend", "config", "utils", "database", "tests"]
+
+[tool.ruff.lint]
+select = [
+    "E",   # pycodestyle errors
+    "W",   # pycodestyle warnings
+    "F",   # Pyflakes
+    "I",   # isort
+    "N",   # pep8-naming
+    "UP",  # pyupgrade
+    "B",   # flake8-bugbear
+    "SIM", # flake8-simplify
+    "ANN", # flake8-annotations
+    "C4",  # flake8-comprehensions
+    "RUF", # Ruff-specific
+]
+ignore = [
+    "ANN101",  # Missing type annotation for `self`
+    "ANN102",  # Missing type annotation for `cls`
+    "ANN401",  # Dynamically typed expressions (Any)
+    "B008",    # Do not perform function calls in default arguments (FastAPI Depends)
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**/*.py" = ["ANN", "S101"]  # Ignore annotations + assert in tests
+
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+line-ending = "auto"
+
+# ==============================================================
+# mypy — Static Type Checking
+# ==============================================================
+[tool.mypy]
+python_version = "3.12"
+strict = false
+warn_return_any = true
+warn_unused_configs = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+follow_imports = "silent"
+show_error_codes = true
+pretty = true
+exclude = ["tests/", "scripts/", "docs/"]
+
+# ==============================================================
+# pytest — Test Configuration
+# ==============================================================
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "-v",
+    "--cov=backend",
+    "--cov=config",
+    "--cov=utils",
+    "--cov=database",
+    "--cov-report=term-missing",
+    "--cov-report=html:htmlcov",
+    "--cov-fail-under=70",
+]
+markers = [
+    "unit: Unit tests (no external dependencies)",
+    "integration: Integration tests (requires DB)",
+    "slow: Slow tests (model inference, video processing)",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+# ==============================================================
+# Coverage
+# ==============================================================
+[tool.coverage.run]
+source = ["backend", "config", "utils", "database"]
+omit = [
+    "*/tests/*",
+    "*/migrations/*",
+    "*/__init__.py",
+    "*/scripts/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "@abstractmethod",
+]
