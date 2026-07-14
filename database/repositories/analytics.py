@@ -63,6 +63,17 @@ class AnalyticsRepository(BaseRepository[AnalyticsHourly]):
         result = await self.session.execute(stmt)
         return list(result.scalars().all())
 
+    async def get_latest_for_camera(self, camera_id: str) -> AnalyticsHourly | None:
+        """Return the most recent bucket for a specific camera."""
+        stmt = (
+            select(AnalyticsHourly)
+            .where(AnalyticsHourly.camera_id == camera_id)
+            .order_by(AnalyticsHourly.hour_bucket.desc())
+            .limit(1)
+        )
+        result = await self.session.execute(stmt)
+        return result.scalar_one_or_none()
+
     async def get_all_cameras_latest(self) -> list[AnalyticsHourly]:
         """Return the most recent complete hour bucket for each camera."""
         # Subquery: max hour_bucket per camera

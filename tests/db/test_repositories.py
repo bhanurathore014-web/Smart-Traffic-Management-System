@@ -269,3 +269,101 @@ async def test_signal_get_last_phase(db_session: AsyncSession) -> None:
     last = await repo.get_last_phase(cam.id)
     assert last is not None
     assert last.phase == "yellow"
+
+
+# ---------------------------------------------------------------------------
+# Additional BaseRepository Coverage
+# ---------------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_base_repo_get_or_raise(db_session: AsyncSession) -> None:
+    repo = CameraRepository(db_session)
+    with pytest.raises(ValueError):
+        await repo.get_or_raise("nonexistent")
+
+@pytest.mark.asyncio
+async def test_base_repo_list_and_count_with_filters(db_session: AsyncSession) -> None:
+    repo = CameraRepository(db_session)
+    await repo.create({"id": _uid(), "name": "C1", "location": "L1", "latitude": 0, "longitude": 0, "status": "active"})
+    await repo.create({"id": _uid(), "name": "C2", "location": "L1", "latitude": 0, "longitude": 0, "status": "inactive"})
+    
+    lst = await repo.list(location="L1", status="active", order_by=Camera.name)
+    assert len(lst) == 1
+    assert lst[0].name == "C1"
+    
+    cnt = await repo.count(location="L1", status="inactive")
+    assert cnt == 1
+
+@pytest.mark.asyncio
+async def test_base_repo_bulk_create_empty(db_session: AsyncSession) -> None:
+    repo = CameraRepository(db_session)
+    assert await repo.bulk_create([]) == 0
+
+@pytest.mark.asyncio
+async def test_base_repo_update_where_and_delete_where(db_session: AsyncSession) -> None:
+    repo = CameraRepository(db_session)
+    await repo.create({"id": _uid(), "name": "C1", "location": "L2", "latitude": 0, "longitude": 0, "status": "active"})
+    await repo.create({"id": _uid(), "name": "C2", "location": "L2", "latitude": 0, "longitude": 0, "status": "active"})
+    
+    updated = await repo.update_where({"location": "L2"}, {"status": "inactive"})
+    assert updated == 2
+    
+    deleted = await repo.delete_where(location="L2")
+    assert deleted == 2
+
+@pytest.mark.asyncio
+async def test_base_repo_delete_not_found(db_session: AsyncSession) -> None:
+    repo = CameraRepository(db_session)
+    assert await repo.delete("nonexistent") is False
+
+
+# ---------------------------------------------------------------------------
+# Additional Repository Coverage
+# ---------------------------------------------------------------------------
+
+@pytest.mark.asyncio
+async def test_number_plate_get_recent_and_high_confidence(db_session: AsyncSession) -> None:
+    cam = await _make_camera(db_session)
+    v = await _make_vehicle(db_session)
+    plate = NumberPlate(id=_uid(), vehicle_id=v.id, plate_text="TEST", plate_text_normalized="TEST", confidence=0.99)
+    db_session.add(plate)
+    
+    tr = TrafficRecord(id=_uid(), camera_id=cam.id, timestamp=_now(), vehicle_id=v.id, number_plate_id=plate.id, direction="north", lane_number=1, speed_kmh=50.0)
+    db_session.add(tr)
+    await db_session.flush()
+
+    repo = NumberPlateRepository(db_session)
+    recent = await repo.get_recent_detections(cam.id)
+    assert len(recent) == 1
+    
+    high_conf = await repo.get_high_confidence(0.90)
+    assert len(high_conf) >= 1
+
+@pytest.mark.asyncio
+async def test_signal_get_phase_history_and_emergency(db_session: AsyncSession) -> None:
+    cam = await _make_camera(db_session)
+    repo = SignalRepository(db_session)
+    now = _now()
+    sig = SignalRecord(id=_uid(), camera_id=cam.id, timestamp=now, phase="red", duration_seconds=30.0, triggered_by=SignalTrigger.EMERGENCY.value)
+    db_session.add(sig)
+    await db_session.flush()
+
+    history = await repo.get_phase_history(cam.id)
+    assert len(history) == 1
+
+    emergency = await repo.get_emergency_overrides(cam.id)
+    assert len(emergency) == 1
+
+@pytest.mark.asyncio
+async def test_traffic_record_bulk_insert_and_recent_and_date_range(db_session: AsyncSession) -> None:
+    cam = await _make_camera(db_session)
+    repo = TrafficRecordRepository(db_session)
+    now = _now()
+    rows = [{"id": _uid(), "camera_id": cam.id, "timestamp": now, "direction": "north", "lane_number": 1, "speed_kmh": 40.0}]
+    await repo.bulk_insert_detections(rows)
+    
+    recent = await repo.get_recent(cam.id)
+    assert len(recent) == 1
+
+    by_date = await repo.get_by_date_range(cam.id, now - timedelta(minutes=1), now + timedelta(minutes=1))
+    assert len(by_date) == 1

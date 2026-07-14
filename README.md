@@ -204,10 +204,10 @@ mypy .
 | 2. Literature Review | ✅ Complete | 20-citation research review |
 | 3. System Design | ✅ Complete | 8 UML/Architecture diagrams |
 | 4. Environment Setup | ✅ Complete | Project structure, configs, scripts |
-| 5. Database Design | 🔄 In Progress | Schema, models, migrations |
-| 6. Backend Development | ⏳ Pending | FastAPI APIs |
+| 5. Database Design | ✅ Complete | Schema, models, migrations |
+| 6. Backend Development | ✅ Complete | FastAPI APIs |
 | 7–13. Core Modules | ⏳ Pending | Detection, tracking, counting, etc. |
-| 14. Dashboard | ⏳ Pending | Streamlit + Plotly |
+| 14. Dashboard | ✅ Complete | Streamlit + Plotly |
 | 15. Testing | ⏳ Pending | Test suite + evaluation |
 | 16. Deployment | ⏳ Pending | Docker + deployment guide |
 
