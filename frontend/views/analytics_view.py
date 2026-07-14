@@ -36,7 +36,7 @@ def render_analytics(client):
     df = df.sort_values('hour_bucket')
     
     st.subheader("Vehicle Volume Trend")
-    fig_vol = px.line(df, x='hour_bucket', y='total_vehicles', title='Total Vehicles per Hour', markers=True)
+    fig_vol = px.line(df, x='hour_bucket', y='vehicle_count', title='Total Vehicles per Hour', markers=True)
     st.plotly_chart(fig_vol, use_container_width=True)
     
     st.subheader("Average Speed Trend")
