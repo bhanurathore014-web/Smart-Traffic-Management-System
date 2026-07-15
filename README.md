@@ -206,7 +206,7 @@ mypy .
 | 4. Environment Setup | ✅ Complete | Project structure, configs, scripts |
 | 5. Database Design | ✅ Complete | Schema, models, migrations |
 | 6. Backend Development | ✅ Complete | FastAPI APIs |
-| 7–13. Core Modules | ⏳ Pending | Detection, tracking, counting, etc. |
+| 7–13. Core Modules | 🔄 In Progress | Detection (✅), tracking, counting, etc. |
 | 14. Dashboard | ✅ Complete | Streamlit + Plotly |
 | 15. Testing | ⏳ Pending | Test suite + evaluation |
 | 16. Deployment | ⏳ Pending | Docker + deployment guide |
